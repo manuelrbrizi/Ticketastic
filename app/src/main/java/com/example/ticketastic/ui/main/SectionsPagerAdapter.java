@@ -14,8 +14,7 @@ import com.example.ticketastic.R;
  */
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-
-    private static final String[] TAB_TITLES = new String[]{"Cine","Teatro","Musica","Otros"};
+    private static final String[] TAB_TITLES = new String[]{"All","Cinema","Theater","Concert"};
     private final Context mContext;
 
     public SectionsPagerAdapter(Context context, FragmentManager fm) {

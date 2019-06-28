@@ -22,7 +22,6 @@ import com.example.ticketastic.R;
  * A placeholder fragment containing a simple view.
  */
 public class MainFragment extends android.support.v4.app.Fragment {
-
     private static final String ARG_SECTION_NUMBER = "section_number";
 
     private com.example.ticketastic.ui.main.PageViewModel pageViewModel;
@@ -50,14 +49,19 @@ public class MainFragment extends android.support.v4.app.Fragment {
         }
         pageViewModel.setIndex(index);
         if(index == 1){
-            pageViewModel.loadEvents(); //CU DE ESTOS ES UN SELECT DISTINTO SEGUN LA CATEGORIA
+            pageViewModel.loadEvents(getContext()); //CU DE ESTOS ES UN SELECT DISTINTO SEGUN LA CATEGORIA
+        }
+        else if(index == 2){
+            pageViewModel.loadMovie(getContext());
+        }
+        else if(index == 3){
+            pageViewModel.loadTheater(getContext());
         }
         else{
-            pageViewModel.loadCine();
+            pageViewModel.loadConcert(getContext());
         }
 
         setHasOptionsMenu(true);
-
     }
 
     @Override

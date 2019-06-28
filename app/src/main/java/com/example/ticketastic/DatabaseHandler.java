@@ -35,7 +35,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private final String COLUMN_SCHEDULE = "schedule";
 
     private String EVENT_QUERY = "CREATE TABLE " + TABLE_NAME_EVENT + " (" +
-                                        COLUMN_NAME + " TEXT, " +
+                                        COLUMN_NAME + " TEXT PRIMARY KEY, " +
                                         COLUMN_DESCRIPTION + " TEXT, " +
                                         COLUMN_TYPE + " TEXT, " +
                                         COLUMN_IMAGE + " TEXT, " +
@@ -45,7 +45,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                                         COLUMN_SCHEDULE + " TEXT)";
 
 
-    DatabaseHandler(Context context) {
+    public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -59,6 +59,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_USER);
         onCreate(db);
+    }
+
+    public boolean addEvent(String name, String type, String image, String date, String schedule){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_NAME, name);
+        contentValues.put(COLUMN_TYPE, type);
+        contentValues.put(COLUMN_IMAGE, image);
+        contentValues.put(COLUMN_DATE, date);
+        contentValues.put(COLUMN_SCHEDULE, schedule);
+
+        long result = db.insert(TABLE_NAME_EVENT, null, contentValues);
+        return (result != -1);
     }
 
     boolean addUser(String username, String password) {
@@ -136,5 +149,46 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             cursor.close();
             return false;
         }
+    }
+
+    public ArrayList<Event> getEvents(){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_NAME_EVENT;
+        ArrayList<Event> toReturn = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery(query, null);
+        while(cursor.moveToNext()){
+            String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
+            String type = cursor.getString(cursor.getColumnIndex(COLUMN_TYPE));
+            String image = cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE));
+            String date = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
+            String schedule = cursor.getString(cursor.getColumnIndex(COLUMN_SCHEDULE));
+
+            Event e = new Event(name, type, image, date, schedule);
+            toReturn.add(e);
+        }
+
+        cursor.close();
+        return toReturn;
+    }
+
+    public ArrayList<Event> getEvents(String type){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_NAME_EVENT + " WHERE " + COLUMN_TYPE + " = ?";
+        ArrayList<Event> toReturn = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery(query, new String[]{type});
+        while(cursor.moveToNext()){
+            String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
+            String image = cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE));
+            String date = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
+            String schedule = cursor.getString(cursor.getColumnIndex(COLUMN_SCHEDULE));
+
+            Event e = new Event(name, type, image, date, schedule);
+            toReturn.add(e);
+        }
+
+        cursor.close();
+        return toReturn;
     }
 }
