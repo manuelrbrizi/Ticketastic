@@ -8,8 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity {
     final DatabaseHandler dbh = new DatabaseHandler(this);
@@ -26,14 +28,18 @@ public class LoginActivity extends AppCompatActivity {
                 TextInputLayout un = (TextInputLayout) findViewById(R.id.textInputLayout2);
                 TextInputLayout pw = (TextInputLayout) findViewById(R.id.textInputLayout3);
 
-                String username = un.getEditText().getText().toString();
-                String password = pw.getEditText().getText().toString();
+                String username = "";
+                String password = "";
 
-                Log.i("USR", username);
-                Log.i("PSW", password);
+                try {
+                    username = un.getEditText().getText().toString();
+                    password = pw.getEditText().getText().toString();
+                } catch(NullPointerException e){
+                    Toast.makeText(getApplicationContext(), "You should complete all fields before pressing LOGIN", Toast.LENGTH_SHORT).show();
+                }
 
                 if(dbh.checkUser(username, password)){
-                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), TabbedActivity.class);
                     startActivity(intent);
                 }
                 else{
@@ -57,6 +63,28 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getApplicationContext().deleteDatabase("ticketastic.db");
+            }
+        });
+
+        Button toastAll = findViewById(R.id.toastAll);
+        toastAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<HashMap<String, String>> result = dbh.getUsers();
+                for(int i = 0; i < result.size(); i++){
+                    String str = String.format("Name = %s", result.get(i).get("username"));
+                    Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        Button showUser = findViewById(R.id.showUser);
+        showUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HashMap<String, String> result = dbh.getUserByUsername("gatito");
+                String str = String.format("Name = %s", result.get("username"));
+                Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -63,9 +63,27 @@
         android:id="@+id/deleteDB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="67dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="65dp"
         android:text="Delete DB"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/toastAll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:text="toastAll"
+        app:layout_constraintEnd_toStartOf="@+id/showUser"
+        app:layout_constraintTop_toTopOf="@+id/deleteDB" />
+
+    <Button
+        android:id="@+id/showUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="58dp"
+        android:text="showUser"
+        app:layout_constraintBaseline_toBaselineOf="@+id/toastAll"
+        app:layout_constraintEnd_toEndOf="parent" />
 </android.support.constraint.ConstraintLayout>

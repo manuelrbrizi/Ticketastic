@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -23,16 +22,23 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 TextInputLayout un = (TextInputLayout) findViewById(R.id.textInputLayout4);
                 TextInputLayout pw = (TextInputLayout) findViewById(R.id.textInputLayout5);
+                String username = "";
+                String password = "";
 
-                String username = un.getEditText().getText().toString();
-                String password = pw.getEditText().getText().toString();
+                try {
+                    username = un.getEditText().getText().toString();
+                    password = pw.getEditText().getText().toString();
+                } catch(NullPointerException e){
+                    Toast.makeText(getApplicationContext(), "You should complete all fields before pressing SEND", Toast.LENGTH_SHORT).show();
+                }
 
                 if(dbh.checkAvailableUsername(username)){
-                    if(dbh.addData(username, password)){
-                        Log.i("BOOL1", "true");
+                    boolean b = dbh.addUser(username, password);
+                    if(b){
+                        Toast.makeText(getApplicationContext(), String.format("User %s succesfully created!", username), Toast.LENGTH_SHORT).show();
                     }
                     else{
-                        Log.i("BOOL1", "false");
+                        Toast.makeText(getApplicationContext(), "We can't create your user right now. Please try later.", Toast.LENGTH_SHORT).show();
                     }
 
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
