@@ -26,21 +26,17 @@ public class EventDetails extends AppCompatActivity {
 
         Event event = (Event) getIntent().getSerializableExtra("event");
         ImageView iv = findViewById(R.id.event_detailed_image);
-        Picasso.get().load(event.getUrl()).into(iv);
+        Picasso.get().load(event.getImage()).into(iv);
         TextView tv = findViewById(R.id.event_title);
         tv.setText(event.getName());
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView = findViewById(R.id.day_recycler_view);
         mRecyclerView.setLayoutManager(layoutManager);
-        List<String> l = new ArrayList<>();
-        l.add("ABCDE");
-        l.add("AABCDE");
-        l.add("AABCDE");
-        l.add("AABCDE");
-        l.add("AABCDE");
 
-        dayAdapter = new HorizontalAdapter(this,l);
+
+
+        dayAdapter = new HorizontalAdapter(this,event.getDate());
 
         mRecyclerView.setAdapter(dayAdapter);
 
@@ -48,7 +44,7 @@ public class EventDetails extends AppCompatActivity {
         timeRecyclerView = findViewById(R.id.time_recyler_view);
         timeRecyclerView.setLayoutManager(timeLayoutManager);
 
-        timeAdapter = new HorizontalAdapter(this,l);
+        timeAdapter = new HorizontalAdapter(this,event.getSchedule());
 
         timeRecyclerView.setAdapter(timeAdapter);
 

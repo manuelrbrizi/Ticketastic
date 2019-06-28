@@ -54,7 +54,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
 
     @Override
     public void onBindViewHolder(EventViewHolder holder, final int position) {
-        Picasso.get().load(eventListFiltered.get(position).getUrl()).into(holder.thumbnail);
+        Picasso.get().load(eventListFiltered.get(position).getImage()).into(holder.thumbnail);
         holder.eventCV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
