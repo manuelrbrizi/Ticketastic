@@ -42,6 +42,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                                         COLUMN_DATE + " TEXT, " +
                                         COLUMN_SCHEDULE + " TEXT)";
 
+    //Tickets
+    private final String TABLE_NAME_TICKET  = "ticket_data";
+    private final String COLUMN_TICKET_NAME = "eventName";
+    private final String COLUMN_TICKET_IMAGE = "image";
+    private final String COLUMN_TICKET_DATE = "eventDate";
+    private final String COLUMN_TICKET_SCHEDULE = "schedule";
+    private final String COLUMN_TICKET_USERNAME = "username";
+
+    private final String TICKET_QUERY = "CREATE TABLE " + TABLE_NAME_TICKET + "( " +
+                                        COLUMN_TICKET_NAME + "TEXT, " +
+                                        COLUMN_TICKET_IMAGE + "TEXT, " +
+                                        COLUMN_TICKET_DATE + "TEXT, " +
+                                        COLUMN_TICKET_USERNAME + "TEXT, " +
+                                        COLUMN_TICKET_SCHEDULE + "TEXT)";
+
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -51,6 +66,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(USER_QUERY);
         db.execSQL(EVENT_QUERY);
+        db.execSQL(TICKET_QUERY);
     }
 
     @Override
@@ -183,6 +199,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
             Event e = new Event(name, type, image, date, schedule);
             toReturn.add(e);
+        }
+
+        cursor.close();
+        return toReturn;
+    }
+
+    ArrayList<Ticket> getTicketsByUser(String username){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_NAME_TICKET + " WHERE " + COLUMN_TICKET_USERNAME + " = ?";
+        ArrayList<Ticket> toReturn = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery(query, new String[]{username});
+        while(cursor.moveToNext()){
+            String name = cursor.getString(cursor.getColumnIndex(COLUMN_TICKET_NAME));
+            String image = cursor.getString(cursor.getColumnIndex(COLUMN_TICKET_IMAGE));
+            String date = cursor.getString(cursor.getColumnIndex(COLUMN_TICKET_DATE));
+            String schedule = cursor.getString(cursor.getColumnIndex(COLUMN_TICKET_SCHEDULE));
+
+            Ticket t = new Ticket(name, image, date, schedule, username);
+            toReturn.add(t);
         }
 
         cursor.close();
