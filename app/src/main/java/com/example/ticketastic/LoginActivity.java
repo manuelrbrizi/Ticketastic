@@ -2,14 +2,12 @@ package com.example.ticketastic;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -89,9 +87,8 @@ public class LoginActivity extends AppCompatActivity {
         showUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HashMap<String, String> result = dbh.getUserByUsername("gatito");
-                String str = String.format("Name = %s", result.get("username"));
-                Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT).show();
+                HashMap<String, String> result = dbh.getUserByUsername("igna");
+                Toast.makeText(getApplicationContext(), String.format("Name = %s", result.get("username")), Toast.LENGTH_SHORT).show();
             }
         });
     }

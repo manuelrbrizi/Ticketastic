@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -61,7 +59,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean addEvent(String name, String type, String image, String date, String schedule){
+    void addEvent(String name, String type, String image, String date, String schedule){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_NAME, name);
@@ -71,7 +69,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         contentValues.put(COLUMN_SCHEDULE, schedule);
 
         long result = db.insert(TABLE_NAME_EVENT, null, contentValues);
-        return (result != -1);
     }
 
     boolean addUser(String username, String password) {
