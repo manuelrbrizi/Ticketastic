@@ -21,6 +21,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        if(PreferenceUtils.getUsername(getApplicationContext()) != null){
+            Intent intent = new Intent(getApplicationContext(), TabbedActivity.class);
+            startActivity(intent);
+        }
+
         Button login = findViewById(R.id.loginButton);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,6 +44,8 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 if(dbh.checkUser(username, password)){
+                    PreferenceUtils.saveUsername(getApplicationContext(), username);
+                    PreferenceUtils.savePassword(getApplicationContext(), password);
                     Intent intent = new Intent(getApplicationContext(), TabbedActivity.class);
                     startActivity(intent);
                 }
