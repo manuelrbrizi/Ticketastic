@@ -26,13 +26,13 @@
                 android:scaleType="fitXY"/>
 
             <!--<TextView-->
-            <!--android:id="@+id/event_name"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:gravity="center"-->
-            <!--android:text="Holi"-->
-            <!--android:textSize="18sp"-->
-            <!--android:textStyle="italic|bold" />-->
+                <!--android:id="@+id/event_name"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="center"-->
+                <!--android:textSize="18sp"-->
+                <!--android:text="Holi"-->
+                <!--android:textStyle="italic" />-->
 
             <!--<TextView-->
             <!--android:id="@+id/event_type"-->

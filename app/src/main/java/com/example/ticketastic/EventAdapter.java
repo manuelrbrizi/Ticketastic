@@ -1,6 +1,8 @@
 package com.example.ticketastic;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,9 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,13 +28,12 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
 
     class EventViewHolder extends RecyclerView.ViewHolder {
         ImageView thumbnail;
+        CardView eventCV;
 
         EventViewHolder(View view) {
             super(view);
-
             thumbnail = view.findViewById(R.id.event_image);
-
-
+            eventCV = view.findViewById(R.id.event_cv);
         }
     }
 
@@ -51,6 +55,14 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     @Override
     public void onBindViewHolder(EventViewHolder holder, final int position) {
         Picasso.get().load(eventListFiltered.get(position).getUrl()).into(holder.thumbnail);
+        holder.eventCV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context,EventDetails.class);
+                intent.putExtra("event",eventList.get(position));
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
