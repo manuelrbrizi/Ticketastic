@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ public class EventDetails extends AppCompatActivity {
     HorizontalAdapter dayAdapter;
     HorizontalAdapter timeAdapter;
     RecyclerView timeRecyclerView;
+    Spinner qSpinner;
 
     Event event;
 
@@ -36,6 +38,7 @@ public class EventDetails extends AppCompatActivity {
         Picasso.get().load(event.getImage()).into(iv);
         TextView tv = findViewById(R.id.event_title);
         tv.setText(event.getName());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView = findViewById(R.id.day_recycler_view);
@@ -71,7 +74,10 @@ public class EventDetails extends AppCompatActivity {
                     }
                 }
 
+
                 if(time != null && day != null){
+                    int quantity = Integer.parseInt(qSpinner.getSelectedItem().toString());
+                    //AGRAGAR QUANTITY A TICKET EN LA BASE DE DATOS
                     Ticket t = new Ticket(event.getName(), event.getImage(), day, time, PreferenceUtils.getUsername(getApplicationContext()), event.getPrice());
                     dbh.addTicket(t);
                     Intent intent = new Intent(getApplicationContext(), ConfirmationActivity.class);

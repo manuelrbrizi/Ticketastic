@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -15,6 +16,8 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        getSupportActionBar().hide();
 
         Button send = findViewById(R.id.sendButton);
         send.setOnClickListener(new View.OnClickListener() {
@@ -32,27 +35,25 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "You should complete all fields before pressing SEND", Toast.LENGTH_SHORT).show();
                 }
 
-                if(dbh.checkAvailableUsername(username)){
+                if (dbh.checkAvailableUsername(username)) {
                     boolean b = dbh.addUser(username, password);
-                    if(b){
+                    if (b) {
                         PreferenceUtils.saveUsername(getApplicationContext(), username);
                         PreferenceUtils.savePassword(getApplicationContext(), password);
-                        if(!EventUtils.areEventsLoaded()){
+                        if (!EventUtils.areEventsLoaded()) {
                             EventUtils.addEventsToDatabase(getApplicationContext());
                         }
                         Toast.makeText(getApplicationContext(), String.format("User %s succesfully created!", username), Toast.LENGTH_SHORT).show();
-                    }
-                    else{
+                    } else {
                         Toast.makeText(getApplicationContext(), "We can't create your user right now. Please try later.", Toast.LENGTH_SHORT).show();
                     }
 
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(intent);
-                }
-
-                else{
+                } else {
                     Toast.makeText(getApplicationContext(), String.format("Username %s already taken", username), Toast.LENGTH_SHORT).show();
                 }
+
         }});
     }
 }
