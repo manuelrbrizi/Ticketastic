@@ -21,6 +21,10 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
     private List<String> stringList;
     private List<HorizontalViewHolder> list = new ArrayList<>();
 
+    public List<HorizontalViewHolder> getList() {
+        return list;
+    }
+
     public HorizontalAdapter(Context context, List<String> stringList) {
         this.context = context;
         this.stringList = stringList;
