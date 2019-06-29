@@ -50,12 +50,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private final String COLUMN_TICKET_SCHEDULE = "schedule";
     private final String COLUMN_TICKET_USERNAME = "username";
 
-    private final String TICKET_QUERY = "CREATE TABLE " + TABLE_NAME_TICKET + "( " +
-                                        COLUMN_TICKET_NAME + "TEXT, " +
-                                        COLUMN_TICKET_IMAGE + "TEXT, " +
-                                        COLUMN_TICKET_DATE + "TEXT, " +
-                                        COLUMN_TICKET_USERNAME + "TEXT, " +
-                                        COLUMN_TICKET_SCHEDULE + "TEXT)";
+    private String TICKET_QUERY = "CREATE TABLE " + TABLE_NAME_TICKET + "( " +
+                                        COLUMN_TICKET_NAME + " TEXT, " +
+                                        COLUMN_TICKET_IMAGE + " TEXT, " +
+                                        COLUMN_TICKET_DATE + " TEXT, " +
+                                        COLUMN_TICKET_USERNAME + " TEXT, " +
+                                        COLUMN_TICKET_SCHEDULE + " TEXT, " +
+                                        "PRIMARY KEY(" + COLUMN_TICKET_USERNAME +"," +
+                                        COLUMN_TICKET_NAME + "))";
+            ;
 
 
     public DatabaseHandler(Context context) {
@@ -85,6 +88,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         contentValues.put(COLUMN_SCHEDULE, schedule);
 
         long result = db.insert(TABLE_NAME_EVENT, null, contentValues);
+    }
+
+    void addTicket(Ticket t){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_TICKET_NAME, t.getEventName());
+        contentValues.put(COLUMN_TICKET_IMAGE, t.getImage());
+        contentValues.put(COLUMN_TICKET_DATE, t.getEventDate());
+        contentValues.put(COLUMN_TICKET_USERNAME, t.getUsername());
+        contentValues.put(COLUMN_TICKET_SCHEDULE, t.getSchedule());
+
+        long result = db.insert(TABLE_NAME_TICKET, null, contentValues);
     }
 
     boolean addUser(String username, String password) {

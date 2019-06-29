@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,21 +35,25 @@ public class EventDetails extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView = findViewById(R.id.day_recycler_view);
         mRecyclerView.setLayoutManager(layoutManager);
-
-
-
         dayAdapter = new HorizontalAdapter(this,event.getDate());
-
         mRecyclerView.setAdapter(dayAdapter);
 
         LinearLayoutManager timeLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         timeRecyclerView = findViewById(R.id.time_recyler_view);
         timeRecyclerView.setLayoutManager(timeLayoutManager);
-
         timeAdapter = new HorizontalAdapter(this,event.getSchedule());
-
         timeRecyclerView.setAdapter(timeAdapter);
 
+        //HAY QUE VER COMO OBTENER CUAL ESTÁ CLICKEADO
+        final Ticket t = new Ticket(event.getName(), event.getImage(), "13AGO19", "16:00", PreferenceUtils.getUsername(getApplicationContext()));
 
+        Button confirmButton = findViewById(R.id.confirm_button);
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseHandler dbh = new DatabaseHandler(getApplicationContext());
+                dbh.addTicket(t);
+            }
+        });
     }
 }

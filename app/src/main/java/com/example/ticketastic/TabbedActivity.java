@@ -29,7 +29,7 @@ public class TabbedActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         //return super.onOptionsItemSelected(item);
         if(item.getItemId()==R.id.profile){
-            Intent intent = new Intent(this,Profile.class);
+            Intent intent = new Intent(this, Profile.class);
             startActivity(intent);
         }
         return false;
