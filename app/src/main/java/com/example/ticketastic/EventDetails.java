@@ -50,7 +50,8 @@ public class EventDetails extends AppCompatActivity {
 
 
 
-        final Ticket t = new Ticket(event.getName(), event.getImage(), "13AGO19", "16:00", PreferenceUtils.getUsername(getApplicationContext()));
+        final Ticket t =
+                new Ticket(event.getName(), event.getImage(), "13AGO19", "16:00", PreferenceUtils.getUsername(getApplicationContext()));
 
 
 
