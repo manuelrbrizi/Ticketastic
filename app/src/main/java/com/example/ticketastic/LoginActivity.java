@@ -6,6 +6,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
 import java.util.ArrayList;
@@ -18,6 +19,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+
+        getSupportActionBar().hide();
 
         if(PreferenceUtils.getUsername(getApplicationContext()) != null){
             Intent intent = new Intent(getApplicationContext(), TabbedActivity.class);
@@ -58,6 +62,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         Button signup = findViewById(R.id.signupButton);
+        signup.setBackground(null);
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,25 +82,25 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        Button toastAll = findViewById(R.id.toastAll);
-        toastAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ArrayList<HashMap<String, String>> result = dbh.getUsers();
-                for(int i = 0; i < result.size(); i++){
-                    String str = String.format("Name = %s", result.get(i).get("username"));
-                    Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        Button showUser = findViewById(R.id.showUser);
-        showUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HashMap<String, String> result = dbh.getUserByUsername("igna");
-                Toast.makeText(getApplicationContext(), String.format("Name = %s", result.get("username")), Toast.LENGTH_SHORT).show();
-            }
-        });
+//        Button toastAll = findViewById(R.id.toastAll);
+//        toastAll.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ArrayList<HashMap<String, String>> result = dbh.getUsers();
+//                for(int i = 0; i < result.size(); i++){
+//                    String str = String.format("Name = %s", result.get(i).get("username"));
+//                    Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+//
+//        Button showUser = findViewById(R.id.showUser);
+//        showUser.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                HashMap<String, String> result = dbh.getUserByUsername("igna");
+//                Toast.makeText(getApplicationContext(), String.format("Name = %s", result.get("username")), Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 }

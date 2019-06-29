@@ -23,6 +23,7 @@ public class EventDetails extends AppCompatActivity {
     HorizontalAdapter dayAdapter;
     HorizontalAdapter timeAdapter;
     RecyclerView timeRecyclerView;
+
     Event event;
 
     @Override
