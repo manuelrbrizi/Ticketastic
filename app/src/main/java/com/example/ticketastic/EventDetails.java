@@ -1,5 +1,6 @@
 package com.example.ticketastic;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -21,8 +23,8 @@ public class EventDetails extends AppCompatActivity {
     HorizontalAdapter dayAdapter;
     HorizontalAdapter timeAdapter;
     RecyclerView timeRecyclerView;
-
     Event event;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,20 +48,11 @@ public class EventDetails extends AppCompatActivity {
         timeAdapter = new HorizontalAdapter(this,event.getSchedule());
         timeRecyclerView.setAdapter(timeAdapter);
 
-        //HAY QUE VER COMO OBTENER CUAL ESTÁ CLICKEADO
-
-
-
-        final Ticket t = new Ticket(event.getName(), event.getImage(), "13AGO19", "16:00", PreferenceUtils.getUsername(getApplicationContext()));
-
-
-
         Button confirmButton = findViewById(R.id.confirm_button);
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DatabaseHandler dbh = new DatabaseHandler(getApplicationContext());
-                dbh.addTicket(t);
 
                 String day = null;
                 for(HorizontalAdapter.HorizontalViewHolder hv : dayAdapter.getList()){
@@ -76,9 +69,17 @@ public class EventDetails extends AppCompatActivity {
                         break;
                     }
                 }
-                Log.i("ticket",time);
-                Log.i("ticket",day);
 
+                if(time != null && day != null){
+                    Ticket t = new Ticket(event.getName(), event.getImage(), day, time, PreferenceUtils.getUsername(getApplicationContext()), event.getPrice());
+                    dbh.addTicket(t);
+                    Intent intent = new Intent(getApplicationContext(), ConfirmationActivity.class);
+                    intent.putExtra("ticket", t);
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Please select a day and a time for the event", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

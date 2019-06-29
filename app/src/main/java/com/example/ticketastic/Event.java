@@ -11,14 +11,18 @@ public class Event implements Serializable {
     private String image;
     private ArrayList<String> date;
     private ArrayList<String> schedule;
+    private int price;
 
-    public Event(String name, String type, String image, String date, String schedule) {
+    public Event(String name, String type, String image, String date, String schedule, int price) {
         this.name = name;
         this.type = type;
         this.image = image;
         this.date = parse(date);
         this.schedule = parse(schedule);
+        this.price = price;
     }
+
+    public int getPrice(){ return price; }
 
     public String getName() {
         return name;

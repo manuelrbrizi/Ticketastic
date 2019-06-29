@@ -44,6 +44,9 @@ public class LoginActivity extends AppCompatActivity {
                 if(dbh.checkUser(username, password)){
                     PreferenceUtils.saveUsername(getApplicationContext(), username);
                     PreferenceUtils.savePassword(getApplicationContext(), password);
+                    if(!EventUtils.areEventsLoaded()){
+                        EventUtils.addEventsToDatabase(getApplicationContext());
+                    }
                     Intent intent = new Intent(getApplicationContext(), TabbedActivity.class);
                     startActivity(intent);
                 }
@@ -68,6 +71,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getApplicationContext().deleteDatabase("ticketastic.db");
+                EventUtils.eventsDeletedFromDatabase();
                 PreferenceUtils.saveUsername(getApplicationContext(), null);
                 PreferenceUtils.savePassword(getApplicationContext(), null);
             }

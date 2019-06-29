@@ -35,6 +35,11 @@ public class RegisterActivity extends AppCompatActivity {
                 if(dbh.checkAvailableUsername(username)){
                     boolean b = dbh.addUser(username, password);
                     if(b){
+                        PreferenceUtils.saveUsername(getApplicationContext(), username);
+                        PreferenceUtils.savePassword(getApplicationContext(), password);
+                        if(!EventUtils.areEventsLoaded()){
+                            EventUtils.addEventsToDatabase(getApplicationContext());
+                        }
                         Toast.makeText(getApplicationContext(), String.format("User %s succesfully created!", username), Toast.LENGTH_SHORT).show();
                     }
                     else{
