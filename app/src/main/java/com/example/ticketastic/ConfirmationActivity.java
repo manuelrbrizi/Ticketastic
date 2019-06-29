@@ -4,10 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 public class ConfirmationActivity extends AppCompatActivity {
     @Override
@@ -17,10 +21,20 @@ public class ConfirmationActivity extends AppCompatActivity {
 
         Ticket t = (Ticket) getIntent().getSerializableExtra("ticket");
         TextView tv = findViewById(R.id.ticket_data);
-        Log.i("DBG", t.getEventName());
-        Log.i("DBG", t.getUsername());
-        String str = String.format("Name = %s, User = %s, Price = %d", t.getEventName(), t.getUsername(), t.getPrice());
-        tv.setText(str);
+        int q = 3;
+
+        String name = "<b>Event name: </b>" + t.getEventName() + "\n";
+        String date = "<b>Date: </b>" + t.getEventDate() + "\n";
+        String time = "<b>Time: </b>" + t.getSchedule() + "\n";
+        String quantity = "<b>Quantity: </b>" + String.valueOf(q) + "\n";
+        String price = "<b>Total cost: 3 x </b>" + "$" + String.valueOf(t.getPrice()) + " = " +
+                       String.valueOf(q * t.getPrice()) + "\n";
+
+
+        tv.setText(Html.fromHtml(name + date + time + quantity + price));
+
+        ImageView iv = findViewById(R.id.event_image);
+        Picasso.get().load(t.getImage()).into(iv);
 
         Button ok = findViewById(R.id.button_ok);
         ok.setOnClickListener(new View.OnClickListener() {

@@ -12,11 +12,24 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="76dp"
         android:layout_marginEnd="8dp"
-        android:text="Congratulations! You have purchased this ticket"
+        android:textStyle="bold"
+        android:text="You have purchased this ticket"
+        android:textSize="22dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.597"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/event_image"
+        android:layout_width="199dp"
+        android:layout_height="167dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_ok"
+        app:layout_constraintEnd_toStartOf="@+id/ticket_data"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/confirmation_title" />
 
     <Button
         android:id="@+id/button_ok"
@@ -34,13 +47,13 @@
 
     <TextView
         android:id="@+id/ticket_data"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="199dp"
+        android:layout_height="167dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="ticket data"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_ok"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/confirmation_title" />
 </android.support.constraint.ConstraintLayout>
