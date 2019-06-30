@@ -25,6 +25,7 @@ public class Profile extends AppCompatActivity {
         DatabaseHandler dbh = new DatabaseHandler(getApplicationContext());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Purchase history");
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView = findViewById(R.id.ticket_recycler_view);

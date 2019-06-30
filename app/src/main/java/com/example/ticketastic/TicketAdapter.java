@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,8 +37,8 @@ public class TicketAdapter extends  RecyclerView.Adapter<TicketAdapter.TicketVie
     @Override
     public void onBindViewHolder(@NonNull TicketViewHolder ticketViewHolder, int i) {
         Picasso.get().load(ticketList.get(i).getImage()).into(ticketViewHolder.thumbnail);
-        String info = String.format("%s \nDay: %s \nTime: %s\nQuantity: xx\nPrice per ticket: %s \nTotal: %d ",ticketList.get(i).getEventName(),ticketList.get(i).getEventDate(),ticketList.get(i).getSchedule(),ticketList.get(i).getPrice(),ticketList.get(i).getPrice()*1);
-        ticketViewHolder.ticketInfo.setText(info);
+        String info = String.format(" &nbsp; <b>%s</b> <br> &nbsp; <b>Day:</b> %s <br> &nbsp; <b>Time:</b> %s<br> &nbsp; <b>Quantity:</b> xx<br> &nbsp; <b>Price per ticket:</b> %s$ <br> &nbsp; <b>Total:</b> %d$ ",ticketList.get(i).getEventName(),ticketList.get(i).getEventDate(),ticketList.get(i).getSchedule(),ticketList.get(i).getPrice(),ticketList.get(i).getPrice()*1);
+        ticketViewHolder.ticketInfo.setText(Html.fromHtml(info));
     }
 
     @Override
