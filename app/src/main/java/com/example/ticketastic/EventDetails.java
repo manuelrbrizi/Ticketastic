@@ -17,6 +17,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class EventDetails extends AppCompatActivity {
 
@@ -82,9 +83,13 @@ public class EventDetails extends AppCompatActivity {
 
                 if(time != null && day != null){
                     int quantity = Integer.parseInt(qSpinner.getSelectedItem().toString());
-                    //AGRAGAR QUANTITY A TICKET EN LA BASE DE DATOS
-                    Ticket t = new Ticket(event.getName(), event.getImage(), day, time, PreferenceUtils.getUsername(getApplicationContext()), event.getPrice(), quantity);
+                    Random random = new Random();
+                    int nextInt = random.nextInt(256*256*256);
+                    String code = String.format("%06x", nextInt).toUpperCase();
+
+                    Ticket t = new Ticket(code, event.getName(), event.getImage(), day, time, PreferenceUtils.getUsername(getApplicationContext()), event.getPrice(), quantity);
                     dbh.addTicket(t);
+
                     Intent intent = new Intent(getApplicationContext(), ConfirmationActivity.class);
                     intent.putExtra("ticket", t);
                     startActivity(intent);

@@ -31,14 +31,11 @@ public class ConfirmationActivity extends AppCompatActivity {
         Ticket t = (Ticket) getIntent().getSerializableExtra("ticket");
         ticketArray.add(t);
 
-        Random random = new Random();
-        int nextInt = random.nextInt(256*256*256);
-
         TextView tv = findViewById(R.id.ticket_data);
         tv.setText("You can access the event with this code:");
 
         TextView tv2 = findViewById(R.id.ticket_code);
-        tv2.setText(String.format("\n %06x \n", nextInt).toUpperCase());
+        tv2.setText(t.getCode());
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView = findViewById(R.id.confirmation_recycler_view);

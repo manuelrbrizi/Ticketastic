@@ -2,7 +2,8 @@ package com.example.ticketastic;
 
 import java.io.Serializable;
 
-public class Ticket implements Serializable {
+class Ticket implements Serializable {
+    private String code;
     private String eventName;
     private String image;
     private String eventDate;
@@ -11,7 +12,8 @@ public class Ticket implements Serializable {
     private int price;
     private int quantity;
 
-    Ticket(String eventName, String image, String eventDate, String schedule, String username, int price, int quantity){
+    Ticket(String code, String eventName, String image, String eventDate, String schedule, String username, int price, int quantity){
+        this.code = code;
         this.eventName = eventName;
         this.image = image;
         this.eventDate = eventDate;
@@ -21,27 +23,29 @@ public class Ticket implements Serializable {
         this.quantity = quantity;
     }
 
-    public int getQuantity() { return quantity; }
+    String getCode(){ return code; }
 
-    public int getPrice(){ return price; }
+    int getQuantity() { return quantity; }
 
-    public String getUsername() {
+    int getPrice(){ return price; }
+
+    String getUsername() {
         return username;
     }
 
-    public String getSchedule() {
+    String getSchedule() {
         return schedule;
     }
 
-    public String getEventName() {
+    String getEventName() {
         return eventName;
     }
 
-    public String getImage() {
+    String getImage() {
         return image;
     }
 
-    public String getEventDate() {
+    String getEventDate() {
         return eventDate;
     }
 }

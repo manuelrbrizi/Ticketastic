@@ -46,6 +46,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     //Tickets
     private final String TABLE_NAME_TICKET  = "ticket_data";
+    private final String COLUMN_TICKET_CODE = "code";
     private final String COLUMN_TICKET_NAME = "eventName";
     private final String COLUMN_TICKET_IMAGE = "image";
     private final String COLUMN_TICKET_DATE = "eventDate";
@@ -55,6 +56,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private final String COLUMN_TICKET_QUANTITY = "quantity";
 
     private String TICKET_QUERY = "CREATE TABLE " + TABLE_NAME_TICKET + "( " +
+                                        COLUMN_TICKET_CODE + " TEXT PRIMARY KEY, " +
                                         COLUMN_TICKET_NAME + " TEXT, " +
                                         COLUMN_TICKET_IMAGE + " TEXT, " +
                                         COLUMN_TICKET_DATE + " TEXT, " +
@@ -98,6 +100,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     void addTicket(Ticket t){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_TICKET_CODE, t.getCode());
         contentValues.put(COLUMN_TICKET_NAME, t.getEventName());
         contentValues.put(COLUMN_TICKET_IMAGE, t.getImage());
         contentValues.put(COLUMN_TICKET_DATE, t.getEventDate());
@@ -238,6 +241,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         Cursor cursor = db.rawQuery(query, new String[]{username});
         while(cursor.moveToNext()){
+            String code = cursor.getString(cursor.getColumnIndex(COLUMN_TICKET_CODE));
             String name = cursor.getString(cursor.getColumnIndex(COLUMN_TICKET_NAME));
             String image = cursor.getString(cursor.getColumnIndex(COLUMN_TICKET_IMAGE));
             String date = cursor.getString(cursor.getColumnIndex(COLUMN_TICKET_DATE));
@@ -245,7 +249,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             int price = cursor.getInt(cursor.getColumnIndex(COLUMN_TICKET_PRICE));
             int quantity = cursor.getInt(cursor.getColumnIndex(COLUMN_TICKET_QUANTITY));
 
-            Ticket t = new Ticket(name, image, date, schedule, username, price, quantity);
+            Ticket t = new Ticket(code, name, image, date, schedule, username, price, quantity);
             toReturn.add(t);
         }
 
