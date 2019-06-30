@@ -9,15 +9,19 @@ public class Ticket implements Serializable {
     private String schedule;
     private String username;
     private int price;
+    private int quantity;
 
-    Ticket(String eventName, String image, String eventDate, String schedule, String username, int price){
+    Ticket(String eventName, String image, String eventDate, String schedule, String username, int price, int quantity){
         this.eventName = eventName;
         this.image = image;
         this.eventDate = eventDate;
         this.schedule = schedule;
         this.username = username;
         this.price = price;
+        this.quantity = quantity;
     }
+
+    public int getQuantity() { return quantity; }
 
     public int getPrice(){ return price; }
 

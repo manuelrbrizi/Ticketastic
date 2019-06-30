@@ -18,6 +18,7 @@ import java.util.ArrayList;
 public class Profile extends AppCompatActivity {
     RecyclerView recyclerView;
     TicketAdapter ticketAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,16 +26,13 @@ public class Profile extends AppCompatActivity {
         DatabaseHandler dbh = new DatabaseHandler(getApplicationContext());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Purchase history");
+        getSupportActionBar().setTitle("Profile");
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView = findViewById(R.id.ticket_recycler_view);
         recyclerView.setLayoutManager(layoutManager);
         ticketAdapter = new TicketAdapter(this,dbh.getTicketsByUser(PreferenceUtils.getUsername(getApplicationContext())));
         recyclerView.setAdapter(ticketAdapter);
-
-
-
 
 //        Button getTickets = findViewById(R.id.getTickets);
 //        getTickets.setOnClickListener(new View.OnClickListener() {
@@ -69,9 +67,9 @@ public class Profile extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==R.id.logout){
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                PreferenceUtils.saveUsername(getApplicationContext(), null);
-                PreferenceUtils.savePassword(getApplicationContext(), null);
-                startActivity(intent);
+            PreferenceUtils.saveUsername(getApplicationContext(), null);
+            PreferenceUtils.savePassword(getApplicationContext(), null);
+            startActivity(intent);
         }
         return false;
     }

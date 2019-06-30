@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
@@ -13,28 +15,37 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class ConfirmationActivity extends AppCompatActivity {
+    RecyclerView recyclerView;
+    TicketAdapter ticketAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirmation);
-
+        ArrayList<Ticket> ticketArray = new ArrayList<>();
+        //DatabaseHandler dbh = new DatabaseHandler(getApplicationContext());
         Ticket t = (Ticket) getIntent().getSerializableExtra("ticket");
+        ticketArray.add(t);
+
+        Random random = new Random();
+        int nextInt = random.nextInt(256*256*256);
+
         TextView tv = findViewById(R.id.ticket_data);
-        int q = 3;
+        tv.setText("You can access the event with this code:");
 
-        String name = "<b>Event name: </b>" + t.getEventName() + "\n";
-        String date = "<b>Date: </b>" + t.getEventDate() + "\n";
-        String time = "<b>Time: </b>" + t.getSchedule() + "\n";
-        String quantity = "<b>Quantity: </b>" + String.valueOf(q) + "\n";
-        String price = "<b>Total cost: 3 x </b>" + "$" + String.valueOf(t.getPrice()) + " = " +
-                       String.valueOf(q * t.getPrice()) + "\n";
+        TextView tv2 = findViewById(R.id.ticket_code);
+        tv2.setText(String.format("\n %06x \n", nextInt).toUpperCase());
 
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerView = findViewById(R.id.confirmation_recycler_view);
+        recyclerView.setLayoutManager(layoutManager);
+        ticketAdapter = new TicketAdapter(this, ticketArray);
+        recyclerView.setAdapter(ticketAdapter);
 
-        tv.setText(Html.fromHtml(name + date + time + quantity + price));
-
-        ImageView iv = findViewById(R.id.event_image);
-        Picasso.get().load(t.getImage()).into(iv);
 
         Button ok = findViewById(R.id.button_ok);
         ok.setOnClickListener(new View.OnClickListener() {

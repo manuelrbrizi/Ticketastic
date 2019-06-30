@@ -37,9 +37,10 @@ public class TicketAdapter extends  RecyclerView.Adapter<TicketAdapter.TicketVie
     
     @Override
     public void onBindViewHolder(@NonNull TicketViewHolder ticketViewHolder, int i) {
-        Picasso.get().load(ticketList.get(i).getImage()).into(ticketViewHolder.thumbnail);
+        Ticket t = ticketList.get(i);
+        Picasso.get().load(t.getImage()).into(ticketViewHolder.thumbnail);
         // CAMBIAR EL 1 POR TICKET.QUANTITY, LO ULTIMO DE LA LINEA DE ABAJO →→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→↓↓↓↓↓↓↓
-        String info = String.format(" &nbsp; <b>%s</b> <br> &nbsp; <b>Day:</b> %s <br> &nbsp; <b>Time:</b> %s<br> &nbsp; <b>Quantity:</b> xx<br> &nbsp; <b>Price per ticket:</b> %s$ <br> &nbsp; <b>Total:</b> %d$ ",ticketList.get(i).getEventName(),ticketList.get(i).getEventDate(),ticketList.get(i).getSchedule(),ticketList.get(i).getPrice(),ticketList.get(i).getPrice()*1);
+        String info = String.format(" &nbsp; <b>%s</b> <br> &nbsp; <b>Day:</b> %s <br> &nbsp; <b>Time:</b> %s<br> &nbsp; <b>Quantity:</b> %d<br> &nbsp; <b>Price per ticket:</b> %d$ <br> &nbsp; <b>Total:</b> %d$ ", t.getEventName(), t.getEventDate(), t.getSchedule(), t.getQuantity(), t.getPrice(), t.getPrice()*t.getQuantity());
         ticketViewHolder.ticketInfo.setText(Html.fromHtml(info));
     }
 

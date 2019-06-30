@@ -7,20 +7,24 @@ import java.io.Serializable;
 
 public class Event implements Serializable {
     private String name;
+    private String description;
     private String type;
     private String image;
     private ArrayList<String> date;
     private ArrayList<String> schedule;
     private int price;
 
-    public Event(String name, String type, String image, String date, String schedule, int price) {
+    public Event(String name, String description, String type, String image, String date, String schedule, int price) {
         this.name = name;
+        this.description = description;
         this.type = type;
         this.image = image;
         this.date = parse(date);
         this.schedule = parse(schedule);
         this.price = price;
     }
+
+    public String getDescription(){ return description; }
 
     public int getPrice(){ return price; }
 

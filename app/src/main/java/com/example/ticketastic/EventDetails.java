@@ -54,6 +54,9 @@ public class EventDetails extends AppCompatActivity {
 
         qSpinner = findViewById(R.id.quantity_spinner);
 
+        TextView t = findViewById(R.id.descrip_text);
+        t.setText(event.getDescription());
+
         Button confirmButton = findViewById(R.id.confirm_button);
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +83,7 @@ public class EventDetails extends AppCompatActivity {
                 if(time != null && day != null){
                     int quantity = Integer.parseInt(qSpinner.getSelectedItem().toString());
                     //AGRAGAR QUANTITY A TICKET EN LA BASE DE DATOS
-                    Ticket t = new Ticket(event.getName(), event.getImage(), day, time, PreferenceUtils.getUsername(getApplicationContext()), event.getPrice());
+                    Ticket t = new Ticket(event.getName(), event.getImage(), day, time, PreferenceUtils.getUsername(getApplicationContext()), event.getPrice(), quantity);
                     dbh.addTicket(t);
                     Intent intent = new Intent(getApplicationContext(), ConfirmationActivity.class);
                     intent.putExtra("ticket", t);
