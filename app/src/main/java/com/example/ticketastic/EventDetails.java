@@ -85,7 +85,6 @@ public class EventDetails extends AppCompatActivity {
                     }
                 }
 
-
                 if(time != null && day != null){
                     int quantity = Integer.parseInt(qSpinner.getSelectedItem().toString());
                     Random random = new Random();

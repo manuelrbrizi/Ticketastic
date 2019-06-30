@@ -4,7 +4,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.strictmode.SqliteObjectLeakedViolation;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -94,7 +97,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         contentValues.put(COLUMN_SCHEDULE, schedule);
         contentValues.put(COLUMN_PRICE, price);
 
-        long result = db.insert(TABLE_NAME_EVENT, null, contentValues);
+        try{
+            db.insertOrThrow(TABLE_NAME_EVENT, null, contentValues);
+        } catch(SQLiteException e){}
     }
 
     void addTicket(Ticket t){
@@ -241,13 +246,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         Cursor cursor = db.rawQuery(query, new String[]{username});
         while(cursor.moveToNext()){
-            String code = cursor.getString(cursor.getColumnIndex(COLUMN_TICKET_CODE));
             String name = cursor.getString(cursor.getColumnIndex(COLUMN_TICKET_NAME));
             String image = cursor.getString(cursor.getColumnIndex(COLUMN_TICKET_IMAGE));
             String date = cursor.getString(cursor.getColumnIndex(COLUMN_TICKET_DATE));
             String schedule = cursor.getString(cursor.getColumnIndex(COLUMN_TICKET_SCHEDULE));
             int price = cursor.getInt(cursor.getColumnIndex(COLUMN_TICKET_PRICE));
             int quantity = cursor.getInt(cursor.getColumnIndex(COLUMN_TICKET_QUANTITY));
+            String code = cursor.getString(cursor.getColumnIndex(COLUMN_TICKET_CODE));
 
             Ticket t = new Ticket(code, name, image, date, schedule, username, price, quantity);
             toReturn.add(t);
