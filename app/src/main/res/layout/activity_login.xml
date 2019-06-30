@@ -30,17 +30,18 @@
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorAccent"
             android:hint="Username"
-            android:textColorHighlight="@color/colorAccent"
-            android:textColor="@color/colorAccent"
-            android:textColorHint="@color/colorAccent"
-            android:shadowColor="@color/colorAccent"
-            app:boxStrokeColor="@color/colorAccent"
-            app:boxBackgroundColor="@color/colorAccent"
+            android:inputType="textPersonName"
             android:outlineAmbientShadowColor="@color/colorAccent"
             android:outlineSpotShadowColor="@color/colorAccent"
+            android:shadowColor="@color/colorAccent"
+            android:textColor="@color/colorAccent"
+            android:textColorHighlight="@color/colorAccent"
+            android:textColorHint="@color/colorAccent"
             android:textColorLink="@color/colorAccent"
-            android:backgroundTint="@color/colorAccent"/>
+            app:boxBackgroundColor="@color/colorAccent"
+            app:boxStrokeColor="@color/colorAccent" />
 
     </android.support.design.widget.TextInputLayout>
 

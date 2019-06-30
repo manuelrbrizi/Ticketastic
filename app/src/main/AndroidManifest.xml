@@ -11,9 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Profile"></activity>
-        <activity android:name=".ConfirmationActivity"></activity>
-        <activity android:name=".EventDetails" />
+        <activity android:name=".Profile" android:noHistory="true" android:parentActivityName="com.example.ticketastic.TabbedActivity"></activity>
+        <activity android:name=".ConfirmationActivity" android:noHistory="true"></activity>
+        <activity android:name=".EventDetails" android:noHistory="true" android:parentActivityName="com.example.ticketastic.TabbedActivity"/>
         <activity
             android:name=".MainActivity"
             android:noHistory="true">
@@ -34,7 +34,7 @@
         <activity
             android:name=".TabbedActivity"
             android:label="Ticketastic"
-            android:launchMode="singleTop">
+            android:launchMode="singleInstance">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
