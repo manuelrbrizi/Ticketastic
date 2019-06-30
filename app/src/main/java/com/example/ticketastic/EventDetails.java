@@ -52,6 +52,8 @@ public class EventDetails extends AppCompatActivity {
         timeAdapter = new HorizontalAdapter(this,event.getSchedule());
         timeRecyclerView.setAdapter(timeAdapter);
 
+        qSpinner = findViewById(R.id.quantity_spinner);
+
         Button confirmButton = findViewById(R.id.confirm_button);
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
