@@ -31,7 +31,7 @@ public class Profile extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView = findViewById(R.id.ticket_recycler_view);
         recyclerView.setLayoutManager(layoutManager);
-        ticketAdapter = new TicketAdapter(this,dbh.getTicketsByUser(PreferenceUtils.getUsername(getApplicationContext())));
+        ticketAdapter = new TicketAdapter(this, dbh.getTicketsByUser(PreferenceUtils.getUsername(getApplicationContext())));
         recyclerView.setAdapter(ticketAdapter);
 
 //        Button getTickets = findViewById(R.id.getTickets);
