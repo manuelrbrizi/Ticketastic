@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +27,7 @@ public class EventDetails extends AppCompatActivity {
     HorizontalAdapter timeAdapter;
     RecyclerView timeRecyclerView;
     Spinner qSpinner;
+    TextView price;
 
     Event event;
 
@@ -33,6 +35,7 @@ public class EventDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_details);
+        getSupportActionBar().setTitle("Buy tickets");
 
         event = (Event) getIntent().getSerializableExtra("event");
         ImageView iv = findViewById(R.id.event_detailed_image);
@@ -57,7 +60,9 @@ public class EventDetails extends AppCompatActivity {
 
         TextView t = findViewById(R.id.descrip_text);
         t.setText(event.getDescription());
-
+        price = findViewById(R.id.event_price);
+        String info = String.format("<b>Price: </b> %d$",event.getPrice());
+        price.setText(Html.fromHtml(info));
         Button confirmButton = findViewById(R.id.confirm_button);
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,9 +93,9 @@ public class EventDetails extends AppCompatActivity {
                     String code = String.format("%06x", nextInt).toUpperCase();
 
                     Ticket t = new Ticket(code, event.getName(), event.getImage(), day, time, PreferenceUtils.getUsername(getApplicationContext()), event.getPrice(), quantity);
-                    dbh.addTicket(t);
+                    //dbh.addTicket(t);
 
-                    Intent intent = new Intent(getApplicationContext(), ConfirmationActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), PaymentActivity.class);
                     intent.putExtra("ticket", t);
                     startActivity(intent);
                 }

@@ -31,6 +31,8 @@ public class ConfirmationActivity extends AppCompatActivity {
         Ticket t = (Ticket) getIntent().getSerializableExtra("ticket");
         ticketArray.add(t);
 
+        getSupportActionBar().setTitle("Purchase successful");
+
         TextView tv = findViewById(R.id.ticket_data);
         tv.setText("You can access the event with this code:");
 

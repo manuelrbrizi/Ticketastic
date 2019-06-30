@@ -40,7 +40,7 @@ public class TicketAdapter extends  RecyclerView.Adapter<TicketAdapter.TicketVie
         Ticket t = ticketList.get(i);
         Picasso.get().load(t.getImage()).into(ticketViewHolder.thumbnail);
         // CAMBIAR EL 1 POR TICKET.QUANTITY, LO ULTIMO DE LA LINEA DE ABAJO →→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→↓↓↓↓↓↓↓
-        String info = String.format(" &nbsp; <b>%s</b> <br> &nbsp; <b>Day:</b> %s <br> &nbsp; <b>Time:</b> %s<br> &nbsp; <b>Quantity:</b> %d<br> &nbsp; <b>Price per ticket:</b> %d$ <br> &nbsp; <b>Total:</b> %d$ ", t.getEventName(), t.getEventDate(), t.getSchedule(), t.getQuantity(), t.getPrice(), t.getPrice()*t.getQuantity());
+        String info = String.format(" &nbsp; <b>%s</b> <br> &nbsp; <b>Code: </b> %s <br>&nbsp; <b>Day:</b> %s <br> &nbsp; <b>Time:</b> %s<br> &nbsp; <b>Quantity:</b> %d<br> &nbsp; <b>Price per ticket:</b> %d$ <br> &nbsp; <b>Total:</b> %d$ ", t.getEventName(), t.getCode(),t.getEventDate(), t.getSchedule(), t.getQuantity(), t.getPrice(), t.getPrice()*t.getQuantity());
         ticketViewHolder.ticketInfo.setText(Html.fromHtml(info));
     }
 
