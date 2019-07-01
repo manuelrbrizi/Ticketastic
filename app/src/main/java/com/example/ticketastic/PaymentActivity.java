@@ -1,5 +1,7 @@
 package com.example.ticketastic;
 
+import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.AsyncQueryHandler;
 import android.content.Context;
 import android.content.Intent;
@@ -10,11 +12,19 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
+import cards.pay.paycardsrecognizer.sdk.Card;
+import cards.pay.paycardsrecognizer.sdk.ScanCardIntent;
 
 public class PaymentActivity extends AppCompatActivity {
 
     Ticket t;
     Context context;
+    TextView name;
+    TextView number;
+    TextView expiration;
+    TextView code;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +36,14 @@ public class PaymentActivity extends AppCompatActivity {
         context = getApplicationContext();
         getSupportActionBar().setTitle("Payment details");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Intent intent = new ScanCardIntent.Builder(context).build();
+        startActivityForResult(intent, 1);
+
+        name = findViewById(R.id.card_name);
+        number = findViewById(R.id.card_number);
+        expiration = findViewById(R.id.card_expiration);
+        code = findViewById(R.id.card_code);
 
         t = (Ticket) getIntent().getSerializableExtra("ticket");
 
@@ -56,6 +74,7 @@ public class PaymentActivity extends AppCompatActivity {
                     }.execute();
 
 
+
 //                try {
 //                    Thread.sleep(1);
 //                } catch (InterruptedException e) {
@@ -67,5 +86,27 @@ public class PaymentActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                Card card = data.getParcelableExtra(ScanCardIntent.RESULT_PAYCARDS_CARD);
+                name.setText(card.getCardHolderName());
+                number.setText(card.getCardNumber());
+                expiration.setText(card.getExpirationDate());
+//                String cardData = "Card number: " + card.getCardNumber() + "\n"
+//                        + "Card holder: " + card.getCardHolderName() + "\n"
+//                        + "Card expiration date: " + card.getExpirationDate();
+//                Log.i("Card", "Card info: " + cardData);
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Log.i("Card", "Scan canceled");
+            } else {
+                Log.i("Card", "Scan failed");
+            }
+        }
     }
 }
