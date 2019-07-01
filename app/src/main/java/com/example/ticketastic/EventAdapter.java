@@ -24,7 +24,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     private Context context;
     private List<Event> eventList;
     private List<Event> eventListFiltered;
-    //private ContactsAdapterListener listener;
 
     class EventViewHolder extends RecyclerView.ViewHolder {
         ImageView thumbnail;
@@ -36,7 +35,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             eventCV = view.findViewById(R.id.event_cv);
         }
     }
-
 
     public EventAdapter(Context context, List<Event> eventList) {
         this.context = context;

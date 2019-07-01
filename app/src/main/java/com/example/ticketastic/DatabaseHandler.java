@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.strictmode.SqliteObjectLeakedViolation;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -35,6 +33,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private final String COLUMN_DATE = "date";
     private final String COLUMN_SCHEDULE = "schedule";
     private final String COLUMN_PRICE = "price";
+    private final String COLUMN_PROMOTION = "promotion";
 
     private String EVENT_QUERY = "CREATE TABLE " + TABLE_NAME_EVENT + " (" +
                                         COLUMN_NAME + " TEXT PRIMARY KEY, " +
@@ -45,7 +44,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                                         COLUMN_TICKETS_LEFT + " INTEGER, " +
                                         COLUMN_DATE + " TEXT, " +
                                         COLUMN_SCHEDULE + " TEXT, " +
-                                        COLUMN_PRICE + " TEXT)";
+                                        COLUMN_PRICE + " TEXT, " +
+                                        COLUMN_PROMOTION + " TEXT)";
 
     //Tickets
     private final String TABLE_NAME_TICKET  = "ticket_data";
@@ -57,6 +57,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private final String COLUMN_TICKET_USERNAME = "username";
     private final String COLUMN_TICKET_PRICE = "price";
     private final String COLUMN_TICKET_QUANTITY = "quantity";
+    private final String COLUMN_TICKET_PROMOTED = "promoted";
 
     private String TICKET_QUERY = "CREATE TABLE " + TABLE_NAME_TICKET + "( " +
                                         COLUMN_TICKET_CODE + " TEXT PRIMARY KEY, " +
@@ -66,7 +67,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                                         COLUMN_TICKET_USERNAME + " TEXT, " +
                                         COLUMN_TICKET_SCHEDULE + " TEXT, " +
                                         COLUMN_TICKET_PRICE + " INTEGER, " +
-                                        COLUMN_TICKET_QUANTITY + " INTEGER)";
+                                        COLUMN_TICKET_QUANTITY + " INTEGER, " +
+                                        COLUMN_TICKET_PROMOTED + " INTEGER)";
 
 
     public DatabaseHandler(Context context) {
@@ -86,7 +88,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    void addEvent(String name, String description, String type, String image, String date, String schedule, int price){
+    void addEvent(String name, String description, String type, String image, String date, String schedule, int price, int promotion){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_NAME, name);
@@ -96,6 +98,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         contentValues.put(COLUMN_DATE, date);
         contentValues.put(COLUMN_SCHEDULE, schedule);
         contentValues.put(COLUMN_PRICE, price);
+        contentValues.put(COLUMN_PROMOTION, promotion);
 
         try{
             db.insertOrThrow(TABLE_NAME_EVENT, null, contentValues);
@@ -113,6 +116,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         contentValues.put(COLUMN_TICKET_SCHEDULE, t.getSchedule());
         contentValues.put(COLUMN_TICKET_PRICE, t.getPrice());
         contentValues.put(COLUMN_TICKET_QUANTITY, t.getQuantity());
+        contentValues.put(COLUMN_TICKET_PROMOTED, t.getPromoted());
 
         long result = db.insert(TABLE_NAME_TICKET, null, contentValues);
     }
@@ -208,8 +212,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             String date = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
             String schedule = cursor.getString(cursor.getColumnIndex(COLUMN_SCHEDULE));
             int price = cursor.getInt(cursor.getColumnIndex(COLUMN_PRICE));
+            int promotion = cursor.getInt(cursor.getColumnIndex(COLUMN_PROMOTION));
 
-            Event e = new Event(name, description, type, image, date, schedule, price);
+            Event e = new Event(name, description, type, image, date, schedule, price, promotion);
             toReturn.add(e);
         }
 
@@ -230,8 +235,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             String date = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
             String schedule = cursor.getString(cursor.getColumnIndex(COLUMN_SCHEDULE));
             int price = cursor.getInt(cursor.getColumnIndex(COLUMN_PRICE));
+            int promotion = cursor.getInt(cursor.getColumnIndex(COLUMN_PROMOTION));
 
-            Event e = new Event(name, description, type, image, date, schedule, price);
+            Event e = new Event(name, description, type, image, date, schedule, price, promotion);
             toReturn.add(e);
         }
 
@@ -253,8 +259,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             int price = cursor.getInt(cursor.getColumnIndex(COLUMN_TICKET_PRICE));
             int quantity = cursor.getInt(cursor.getColumnIndex(COLUMN_TICKET_QUANTITY));
             String code = cursor.getString(cursor.getColumnIndex(COLUMN_TICKET_CODE));
+            int promotion = cursor.getInt(cursor.getColumnIndex(COLUMN_TICKET_PROMOTED));
 
-            Ticket t = new Ticket(code, name, image, date, schedule, username, price, quantity);
+            Ticket t = new Ticket(code, name, image, date, schedule, username, price, quantity, promotion);
             toReturn.add(t);
         }
 

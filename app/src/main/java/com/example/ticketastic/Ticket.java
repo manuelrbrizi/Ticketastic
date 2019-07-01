@@ -11,8 +11,9 @@ class Ticket implements Serializable {
     private String username;
     private int price;
     private int quantity;
+    private int promoted;
 
-    Ticket(String code, String eventName, String image, String eventDate, String schedule, String username, int price, int quantity){
+    Ticket(String code, String eventName, String image, String eventDate, String schedule, String username, int price, int quantity, int promoted){
         this.code = code;
         this.eventName = eventName;
         this.image = image;
@@ -21,7 +22,12 @@ class Ticket implements Serializable {
         this.username = username;
         this.price = price;
         this.quantity = quantity;
+        this.promoted = promoted;
     }
+
+    boolean isPromoted(){ return promoted == 1; }
+
+    int getPromoted(){ return promoted; }
 
     String getCode(){ return code; }
 

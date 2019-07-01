@@ -13,8 +13,9 @@ public class Event implements Serializable {
     private ArrayList<String> date;
     private ArrayList<String> schedule;
     private int price;
+    private int promotion;
 
-    public Event(String name, String description, String type, String image, String date, String schedule, int price) {
+    public Event(String name, String description, String type, String image, String date, String schedule, int price, int promotion) {
         this.name = name;
         this.description = description;
         this.type = type;
@@ -22,7 +23,10 @@ public class Event implements Serializable {
         this.date = parse(date);
         this.schedule = parse(schedule);
         this.price = price;
+        this.promotion = promotion;
     }
+
+    public boolean isPromoted(){ return promotion == 1; }
 
     public String getDescription(){ return description; }
 
