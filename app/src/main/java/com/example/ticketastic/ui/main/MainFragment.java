@@ -3,6 +3,7 @@ package com.example.ticketastic.ui.main;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 import android.support.annotation.NonNull;
 import android.arch.lifecycle.ViewModelProviders;
+import android.widget.Toast;
 
 import com.example.ticketastic.EventAdapter;
 import com.example.ticketastic.R;
@@ -28,6 +30,9 @@ public class MainFragment extends android.support.v4.app.Fragment {
     RecyclerView mRecyclerView;
     EventAdapter eventAdapter;
     private SearchView searchView;
+
+    private SwipeRefreshLayout swipeRefreshLayout;
+
 
 
 
@@ -70,6 +75,18 @@ public class MainFragment extends android.support.v4.app.Fragment {
             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_tabbed, container, false);
         mRecyclerView = root.findViewById(R.id.recycler_view);
+
+        swipeRefreshLayout =  root.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        swipeRefreshLayout.setProgressBackgroundColorSchemeResource(R.color.colorAccent);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Toast.makeText(getContext(),"Hola",Toast.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(false);
+
+            }
+        });
 
         GridLayoutManager mGridLayoutManager = new GridLayoutManager(getActivity(), 2);
 
@@ -118,6 +135,9 @@ public class MainFragment extends android.support.v4.app.Fragment {
     }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
-
+    }
 }
