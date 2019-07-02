@@ -113,4 +113,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             }
         };
     }
+
+    public void setList(List<Event> list){
+        this.eventList = list;
+        this.eventListFiltered = list;
+    }
 }

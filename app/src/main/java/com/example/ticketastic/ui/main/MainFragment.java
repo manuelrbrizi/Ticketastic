@@ -2,7 +2,11 @@ package com.example.ticketastic.ui.main;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.renderscript.ScriptGroup;
+import android.speech.RecognizerIntent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.SearchView;
 import android.support.annotation.NonNull;
 import android.arch.lifecycle.ViewModelProviders;
@@ -19,6 +24,10 @@ import android.widget.Toast;
 
 import com.example.ticketastic.EventAdapter;
 import com.example.ticketastic.R;
+
+import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -29,7 +38,7 @@ public class MainFragment extends android.support.v4.app.Fragment {
     private com.example.ticketastic.ui.main.PageViewModel pageViewModel;
     RecyclerView mRecyclerView;
     EventAdapter eventAdapter;
-    private SearchView searchView;
+    public SearchView searchView;
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -48,6 +57,7 @@ public class MainFragment extends android.support.v4.app.Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         pageViewModel = ViewModelProviders.of(this).get(PageViewModel.class);
+
         int index = 1;
         if (getArguments() != null) {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
@@ -82,7 +92,23 @@ public class MainFragment extends android.support.v4.app.Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Toast.makeText(getContext(),"Hola",Toast.LENGTH_SHORT).show();
+                int index = getArguments().getInt(ARG_SECTION_NUMBER);
+                swipeRefreshLayout.setRefreshing(true);
+                if(index == 1){
+                    pageViewModel.loadEvents(getContext()); //CU DE ESTOS ES UN SELECT DISTINTO SEGUN LA CATEGORIA
+                }
+                else if(index == 2){
+                    pageViewModel.loadMovie(getContext());
+                }
+                else if(index == 3){
+                    pageViewModel.loadTheater(getContext());
+                }
+                else if(index ==4){
+                    pageViewModel.loadConcert(getContext());
+                }
+
+                eventAdapter.setList(pageViewModel.getEvents());
+                eventAdapter.notifyDataSetChanged();
                 swipeRefreshLayout.setRefreshing(false);
 
             }
@@ -107,6 +133,7 @@ public class MainFragment extends android.support.v4.app.Fragment {
         inflater.inflate(R.menu.options_menu,menu);
 
         SearchManager searchManager = (SearchManager) getContext().getSystemService(Context.SEARCH_SERVICE);
+
         searchView = (SearchView) menu.findItem(R.id.search)
                 .getActionView();
         searchView.setSearchableInfo(searchManager
@@ -135,9 +162,6 @@ public class MainFragment extends android.support.v4.app.Fragment {
     }
 
 
-    @Override
-    public void onResume() {
-        super.onResume();
 
-    }
+
 }
