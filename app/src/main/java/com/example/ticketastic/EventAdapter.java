@@ -57,7 +57,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context,EventDetails.class);
-                intent.putExtra("event",eventList.get(position));
+                intent.putExtra("event",eventListFiltered.get(position));
                 context.startActivity(intent);
             }
         });
@@ -101,5 +101,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
                 notifyDataSetChanged();
             }
         };
+    }
+
+    public void setList(List<Event> list){
+        this.eventList = list;
+        this.eventListFiltered = list;
     }
 }

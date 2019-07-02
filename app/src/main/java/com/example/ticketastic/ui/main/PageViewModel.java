@@ -7,6 +7,7 @@ import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.ticketastic.DatabaseHandler;
 import com.example.ticketastic.Event;
@@ -41,6 +42,9 @@ public class PageViewModel extends ViewModel {
     void loadMovie(Context context){
         DatabaseHandler db = new DatabaseHandler(context);
         mEventList = db.getEvents("movie");
+        for (Event e : mEventList){
+            Log.i("Movie",e.getName());
+        }
     }
 
     void loadFestival(Context context){

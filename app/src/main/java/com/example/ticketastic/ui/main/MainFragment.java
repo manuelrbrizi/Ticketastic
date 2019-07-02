@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.renderscript.ScriptGroup;
 import android.speech.RecognizerIntent;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.SearchView;
 import android.support.annotation.NonNull;
 import android.arch.lifecycle.ViewModelProviders;
@@ -90,8 +92,23 @@ public class MainFragment extends android.support.v4.app.Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Toast.makeText(getContext(),String.format("Index %d",getArguments().getInt(ARG_SECTION_NUMBER)),Toast.LENGTH_SHORT).show();
+                int index = getArguments().getInt(ARG_SECTION_NUMBER);
+                swipeRefreshLayout.setRefreshing(true);
+                if(index == 1){
+                    pageViewModel.loadEvents(getContext()); //CU DE ESTOS ES UN SELECT DISTINTO SEGUN LA CATEGORIA
+                }
+                else if(index == 2){
+                    pageViewModel.loadMovie(getContext());
+                }
+                else if(index == 3){
+                    pageViewModel.loadTheater(getContext());
+                }
+                else if(index ==4){
+                    pageViewModel.loadConcert(getContext());
+                }
 
+                eventAdapter.setList(pageViewModel.getEvents());
+                eventAdapter.notifyDataSetChanged();
                 swipeRefreshLayout.setRefreshing(false);
 
             }
@@ -144,12 +161,6 @@ public class MainFragment extends android.support.v4.app.Fragment {
 
     }
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-    }
 
 
 
