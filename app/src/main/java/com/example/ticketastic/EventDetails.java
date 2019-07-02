@@ -39,7 +39,7 @@ public class EventDetails extends AppCompatActivity {
 
         event = (Event) getIntent().getSerializableExtra("event");
         ImageView iv = findViewById(R.id.event_detailed_image);
-        Picasso.get().load(event.getImage()).into(iv);
+        iv.setImageResource(event.getImage());
         TextView tv = findViewById(R.id.event_title);
         tv.setText(event.getName());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

@@ -38,7 +38,7 @@ public class TicketAdapter extends  RecyclerView.Adapter<TicketAdapter.TicketVie
     @Override
     public void onBindViewHolder(@NonNull TicketViewHolder ticketViewHolder, int i) {
         Ticket t = ticketList.get(i);
-        Picasso.get().load(t.getImage()).into(ticketViewHolder.thumbnail);
+        ticketViewHolder.thumbnail.setImageResource(t.getImage());
         String info = "";
         // CAMBIAR EL 1 POR TICKET.QUANTITY, LO ULTIMO DE LA LINEA DE ABAJO →→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→↓↓↓↓↓↓↓
         if(t.isPromoted()){
