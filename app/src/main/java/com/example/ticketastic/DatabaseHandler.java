@@ -207,7 +207,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return b;
     }
 
-
     boolean checkUser(String username, String password) {
         SQLiteDatabase db = getWritableDatabase();
 
@@ -234,7 +233,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, null);
         while(cursor.moveToNext()){
             int id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID));
-            Log.i("ID", String.format("%d",id));
+            //Log.i("ID", String.format("%d",id));
             if(idArray.contains(id)){
                 String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
                 String description = cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION));
