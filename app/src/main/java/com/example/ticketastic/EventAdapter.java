@@ -57,7 +57,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context,EventDetails.class);
-                intent.putExtra("event",eventList.get(position));
+                intent.putExtra("event", eventListFiltered.get(position));
                 context.startActivity(intent);
             }
         });
@@ -76,7 +76,18 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
                 String charString = charSequence.toString();
                 if (charString.isEmpty()) {
                     eventListFiltered = eventList;
-                } else {
+                }
+                else if(charString.equals("2x1")){
+                    List<Event> filteredList = new ArrayList<>();
+                    for (Event row : eventList) {
+                        if (row.isPromoted()) {
+                            filteredList.add(row);
+                        }
+                    }
+
+                    eventListFiltered = filteredList;
+                }
+                else {
                     List<Event> filteredList = new ArrayList<>();
                     for (Event row : eventList) {
 
