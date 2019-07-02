@@ -1,8 +1,10 @@
 package com.example.ticketastic;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -17,12 +19,13 @@ import com.example.ticketastic.ui.main.SectionsPagerAdapter;
 public class TabbedActivity extends AppCompatActivity {
 
     SectionsPagerAdapter sectionsPagerAdapter;
+    ViewPager viewPager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tabbed);
         sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
-        ViewPager viewPager = findViewById(R.id.view_pager);
+        viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
@@ -45,11 +48,17 @@ public class TabbedActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            MainFragment mf =  (MainFragment) sectionsPagerAdapter.getItem(1);
-            if(mf.searchView != null)
-                mf.searchView.setQuery("hola",true);
+            MainFragment mf = null;
+            for(Fragment f : getSupportFragmentManager().getFragments()){
+                if(f.isVisible()){
+                    mf = (MainFragment) f;
+                    break;
+                }
+            }
 
-            //Toast.makeText(this,"voice", Toast.LENGTH_LONG).show();
+            mf.searchView.setQuery(intent.getStringExtra(SearchManager.QUERY),false);
+
+            //Toast.makeText(this,intent.getDataString(), Toast.LENGTH_LONG).show();
 
         }
 
