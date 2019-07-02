@@ -50,7 +50,6 @@ public class TabbedActivity extends AppCompatActivity {
                 mf.searchView.setQuery("hola",true);
 
             //Toast.makeText(this,"voice", Toast.LENGTH_LONG).show();
-
         }
 
     }

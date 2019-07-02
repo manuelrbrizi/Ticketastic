@@ -5,7 +5,7 @@ import java.io.Serializable;
 class Ticket implements Serializable {
     private String code;
     private String eventName;
-    private String image;
+    private int image;
     private String eventDate;
     private String schedule;
     private String username;
@@ -13,7 +13,7 @@ class Ticket implements Serializable {
     private int quantity;
     private int promoted;
 
-    Ticket(String code, String eventName, String image, String eventDate, String schedule, String username, int price, int quantity, int promoted){
+    Ticket(String code, String eventName, int image, String eventDate, String schedule, String username, int price, int quantity, int promoted){
         this.code = code;
         this.eventName = eventName;
         this.image = image;
@@ -47,7 +47,7 @@ class Ticket implements Serializable {
         return eventName;
     }
 
-    String getImage() {
+    int getImage() {
         return image;
     }
 

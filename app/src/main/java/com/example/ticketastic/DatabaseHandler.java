@@ -60,7 +60,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                                         COLUMN_NAME + " TEXT, " +
                                         COLUMN_DESCRIPTION + " TEXT, " +
                                         COLUMN_TYPE + " TEXT, " +
-                                        COLUMN_IMAGE + " TEXT, " +
+                                        COLUMN_IMAGE + " INTEGER, " +
                                         COLUMN_TOTAL_TICKETS + " INTEGER, " +
                                         COLUMN_TICKETS_LEFT + " INTEGER, " +
                                         COLUMN_DATE + " TEXT, " +
@@ -83,7 +83,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private String TICKET_QUERY = "CREATE TABLE " + TABLE_NAME_TICKET + "( " +
                                         COLUMN_TICKET_CODE + " TEXT PRIMARY KEY, " +
                                         COLUMN_TICKET_NAME + " TEXT, " +
-                                        COLUMN_TICKET_IMAGE + " TEXT, " +
+                                        COLUMN_TICKET_IMAGE + " INTEGER, " +
                                         COLUMN_TICKET_DATE + " TEXT, " +
                                         COLUMN_TICKET_USERNAME + " TEXT, " +
                                         COLUMN_TICKET_SCHEDULE + " TEXT, " +
@@ -111,7 +111,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    void addEvent(int id, String name, String description, String type, String image, String date, String schedule, int price, int promotion){
+    void addEvent(int id, String name, String description, String type, int image, String date, String schedule, int price, int promotion){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_ID, id);
@@ -238,7 +238,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
                 String description = cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION));
                 String type = cursor.getString(cursor.getColumnIndex(COLUMN_TYPE));
-                String image = cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE));
+                int image = cursor.getInt(cursor.getColumnIndex(COLUMN_IMAGE));
                 String date = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
                 String schedule = cursor.getString(cursor.getColumnIndex(COLUMN_SCHEDULE));
                 int price = cursor.getInt(cursor.getColumnIndex(COLUMN_PRICE));
@@ -282,7 +282,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             if(idArray.contains(id)){
                 String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
                 String description = cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION));
-                String image = cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE));
+                int image = cursor.getInt(cursor.getColumnIndex(COLUMN_IMAGE));
                 String date = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
                 String schedule = cursor.getString(cursor.getColumnIndex(COLUMN_SCHEDULE));
                 int price = cursor.getInt(cursor.getColumnIndex(COLUMN_PRICE));
@@ -305,7 +305,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, new String[]{username});
         while(cursor.moveToNext()){
             String name = cursor.getString(cursor.getColumnIndex(COLUMN_TICKET_NAME));
-            String image = cursor.getString(cursor.getColumnIndex(COLUMN_TICKET_IMAGE));
+            int image = cursor.getInt(cursor.getColumnIndex(COLUMN_TICKET_IMAGE));
             String date = cursor.getString(cursor.getColumnIndex(COLUMN_TICKET_DATE));
             String schedule = cursor.getString(cursor.getColumnIndex(COLUMN_TICKET_SCHEDULE));
             int price = cursor.getInt(cursor.getColumnIndex(COLUMN_TICKET_PRICE));

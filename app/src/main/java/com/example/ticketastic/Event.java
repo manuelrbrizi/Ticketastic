@@ -10,13 +10,13 @@ public class Event implements Serializable {
     private String name;
     private String description;
     private String type;
-    private String image;
+    private int image;
     private ArrayList<String> date;
     private ArrayList<String> schedule;
     private int price;
     private int promotion;
 
-    public Event(int id, String name, String description, String type, String image, String date, String schedule, int price, int promotion) {
+    public Event(int id, String name, String description, String type, int image, String date, String schedule, int price, int promotion) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -44,7 +44,7 @@ public class Event implements Serializable {
         return type;
     }
 
-    public String getImage() {
+    public int getImage() {
         return image;
     }
 
