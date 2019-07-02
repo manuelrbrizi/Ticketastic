@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.io.Serializable;
 
 public class Event implements Serializable {
+    private int id;
     private String name;
     private String description;
     private String type;
@@ -13,8 +14,10 @@ public class Event implements Serializable {
     private ArrayList<String> date;
     private ArrayList<String> schedule;
     private int price;
+    private int promotion;
 
-    public Event(String name, String description, String type, String image, String date, String schedule, int price) {
+    public Event(int id, String name, String description, String type, String image, String date, String schedule, int price, int promotion) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.type = type;
@@ -22,7 +25,12 @@ public class Event implements Serializable {
         this.date = parse(date);
         this.schedule = parse(schedule);
         this.price = price;
+        this.promotion = promotion;
     }
+
+    public int getId(){return id;}
+
+    public boolean isPromoted(){ return promotion == 1; }
 
     public String getDescription(){ return description; }
 

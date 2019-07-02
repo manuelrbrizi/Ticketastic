@@ -1,15 +1,32 @@
 package com.example.ticketastic;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.strictmode.SqliteObjectLeakedViolation;
+import android.os.AsyncTask;
+import android.os.StrictMode;
+import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
@@ -26,6 +43,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     //Events
     private final String TABLE_NAME_EVENT = "event_data";
+    private final String COLUMN_ID = "id";
     private final String COLUMN_NAME = "name";
     private final String COLUMN_DESCRIPTION = "description";
     private final String COLUMN_TYPE = "type";
@@ -35,9 +53,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private final String COLUMN_DATE = "date";
     private final String COLUMN_SCHEDULE = "schedule";
     private final String COLUMN_PRICE = "price";
+    private final String COLUMN_PROMOTION = "promotion";
 
     private String EVENT_QUERY = "CREATE TABLE " + TABLE_NAME_EVENT + " (" +
-                                        COLUMN_NAME + " TEXT PRIMARY KEY, " +
+                                        COLUMN_ID + " INTEGER PRIMARY KEY, " +
+                                        COLUMN_NAME + " TEXT, " +
                                         COLUMN_DESCRIPTION + " TEXT, " +
                                         COLUMN_TYPE + " TEXT, " +
                                         COLUMN_IMAGE + " TEXT, " +
@@ -45,7 +65,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                                         COLUMN_TICKETS_LEFT + " INTEGER, " +
                                         COLUMN_DATE + " TEXT, " +
                                         COLUMN_SCHEDULE + " TEXT, " +
-                                        COLUMN_PRICE + " TEXT)";
+                                        COLUMN_PRICE + " TEXT, " +
+                                        COLUMN_PROMOTION + " TEXT)";
 
     //Tickets
     private final String TABLE_NAME_TICKET  = "ticket_data";
@@ -57,6 +78,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private final String COLUMN_TICKET_USERNAME = "username";
     private final String COLUMN_TICKET_PRICE = "price";
     private final String COLUMN_TICKET_QUANTITY = "quantity";
+    private final String COLUMN_TICKET_PROMOTED = "promoted";
 
     private String TICKET_QUERY = "CREATE TABLE " + TABLE_NAME_TICKET + "( " +
                                         COLUMN_TICKET_CODE + " TEXT PRIMARY KEY, " +
@@ -66,11 +88,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                                         COLUMN_TICKET_USERNAME + " TEXT, " +
                                         COLUMN_TICKET_SCHEDULE + " TEXT, " +
                                         COLUMN_TICKET_PRICE + " INTEGER, " +
-                                        COLUMN_TICKET_QUANTITY + " INTEGER)";
+                                        COLUMN_TICKET_QUANTITY + " INTEGER, " +
+                                        COLUMN_TICKET_PROMOTED + " INTEGER)";
 
-
+    //final Context context;
+    static String res = null;
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+       // this.context = context;
     }
 
     @Override
@@ -86,9 +111,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    void addEvent(String name, String description, String type, String image, String date, String schedule, int price){
+    void addEvent(int id, String name, String description, String type, String image, String date, String schedule, int price, int promotion){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_ID, id);
         contentValues.put(COLUMN_NAME, name);
         contentValues.put(COLUMN_DESCRIPTION, description);
         contentValues.put(COLUMN_TYPE, type);
@@ -96,6 +122,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         contentValues.put(COLUMN_DATE, date);
         contentValues.put(COLUMN_SCHEDULE, schedule);
         contentValues.put(COLUMN_PRICE, price);
+        contentValues.put(COLUMN_PROMOTION, promotion);
 
         try{
             db.insertOrThrow(TABLE_NAME_EVENT, null, contentValues);
@@ -113,6 +140,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         contentValues.put(COLUMN_TICKET_SCHEDULE, t.getSchedule());
         contentValues.put(COLUMN_TICKET_PRICE, t.getPrice());
         contentValues.put(COLUMN_TICKET_QUANTITY, t.getQuantity());
+        contentValues.put(COLUMN_TICKET_PROMOTED, t.getPromoted());
 
         long result = db.insert(TABLE_NAME_TICKET, null, contentValues);
     }
@@ -195,25 +223,51 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public ArrayList<Event> getEvents(){
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         SQLiteDatabase db = getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_NAME_EVENT;
+
         ArrayList<Event> toReturn = new ArrayList<>();
+        ArrayList<Integer> idArray = parseID(doInBackground());
 
         Cursor cursor = db.rawQuery(query, null);
         while(cursor.moveToNext()){
-            String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
-            String description = cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION));
-            String type = cursor.getString(cursor.getColumnIndex(COLUMN_TYPE));
-            String image = cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE));
-            String date = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
-            String schedule = cursor.getString(cursor.getColumnIndex(COLUMN_SCHEDULE));
-            int price = cursor.getInt(cursor.getColumnIndex(COLUMN_PRICE));
+            int id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID));
+            Log.i("ID", String.format("%d",id));
+            if(idArray.contains(id)){
+                String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
+                String description = cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION));
+                String type = cursor.getString(cursor.getColumnIndex(COLUMN_TYPE));
+                String image = cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE));
+                String date = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
+                String schedule = cursor.getString(cursor.getColumnIndex(COLUMN_SCHEDULE));
+                int price = cursor.getInt(cursor.getColumnIndex(COLUMN_PRICE));
+                int promotion = cursor.getInt(cursor.getColumnIndex(COLUMN_PROMOTION));
 
-            Event e = new Event(name, description, type, image, date, schedule, price);
-            toReturn.add(e);
+                Event e = new Event(id, name, description, type, image, date, schedule, price, promotion);
+                toReturn.add(e);
+            }
         }
 
         cursor.close();
+        return toReturn;
+    }
+
+    private ArrayList<Integer> parseID(String str){
+        ArrayList<Integer> toReturn = new ArrayList<>();
+        try {
+            JSONObject obj = new JSONObject(str);
+            JSONArray data = obj.getJSONArray("user");
+            for(int i=0; i<data.length(); i++){
+                toReturn.add(Integer.valueOf(data.getJSONObject(i).getString("id")));
+                Log.i("ELEM",data.getJSONObject(i).getString("id"));
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         return toReturn;
     }
 
@@ -221,18 +275,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_NAME_EVENT + " WHERE " + COLUMN_TYPE + " = ?";
         ArrayList<Event> toReturn = new ArrayList<>();
-
+        ArrayList<Integer> idArray = parseID(doInBackground());
         Cursor cursor = db.rawQuery(query, new String[]{type});
         while(cursor.moveToNext()){
-            String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
-            String description = cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION));
-            String image = cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE));
-            String date = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
-            String schedule = cursor.getString(cursor.getColumnIndex(COLUMN_SCHEDULE));
-            int price = cursor.getInt(cursor.getColumnIndex(COLUMN_PRICE));
+            int id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID));
+            Log.i("ID", String.format("%d",id));
+            if(idArray.contains(id)){
+                String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
+                String description = cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION));
+                String image = cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE));
+                String date = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
+                String schedule = cursor.getString(cursor.getColumnIndex(COLUMN_SCHEDULE));
+                int price = cursor.getInt(cursor.getColumnIndex(COLUMN_PRICE));
+                int promotion = cursor.getInt(cursor.getColumnIndex(COLUMN_PROMOTION));
 
-            Event e = new Event(name, description, type, image, date, schedule, price);
-            toReturn.add(e);
+                Event e = new Event(id, name, description, type, image, date, schedule, price, promotion);
+                toReturn.add(e);
+            }
         }
 
         cursor.close();
@@ -253,12 +312,52 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             int price = cursor.getInt(cursor.getColumnIndex(COLUMN_TICKET_PRICE));
             int quantity = cursor.getInt(cursor.getColumnIndex(COLUMN_TICKET_QUANTITY));
             String code = cursor.getString(cursor.getColumnIndex(COLUMN_TICKET_CODE));
+            int promotion = cursor.getInt(cursor.getColumnIndex(COLUMN_TICKET_PROMOTED));
 
-            Ticket t = new Ticket(code, name, image, date, schedule, username, price, quantity);
+            Ticket t = new Ticket(code, name, image, date, schedule, username, price, quantity, promotion);
             toReturn.add(t);
         }
 
         cursor.close();
         return toReturn;
+    }
+
+    private String doInBackground() {
+        HttpURLConnection connection = null;
+        BufferedReader reader = null;
+
+        try {
+            URL url = new URL("https://script.google.com/macros/s/AKfycbzdscQP9WOrnnGuQidJf3zm2PDffGbKl7kO-689Ty2lI3vghs02/exec");
+            connection = (HttpURLConnection) url.openConnection();
+            connection.connect();
+            InputStream stream = connection.getInputStream();
+            reader = new BufferedReader(new InputStreamReader(stream));
+            StringBuffer buffer = new StringBuffer();
+            String line = "";
+
+            while ((line = reader.readLine()) != null) {
+                buffer.append(line+"\n");
+            }
+            Log.i("RES", buffer.toString());
+            return buffer.toString();
+
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 }

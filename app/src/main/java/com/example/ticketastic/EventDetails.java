@@ -61,7 +61,15 @@ public class EventDetails extends AppCompatActivity {
         TextView t = findViewById(R.id.descrip_text);
         t.setText(event.getDescription());
         price = findViewById(R.id.event_price);
-        String info = String.format("<b>Price: </b> %d$",event.getPrice());
+        String info = "";
+
+        if(event.isPromoted()){
+            info = String.format("<b>Price: </b> %d$ <br> &nbsp;<b>THIS EVENT IS 2X1!</b>",event.getPrice());
+        }
+        else{
+            info = String.format("<b>Price: </b> %d$",event.getPrice());
+        }
+
         price.setText(Html.fromHtml(info));
         Button confirmButton = findViewById(R.id.confirm_button);
         confirmButton.setOnClickListener(new View.OnClickListener() {
@@ -90,9 +98,8 @@ public class EventDetails extends AppCompatActivity {
                     Random random = new Random();
                     int nextInt = random.nextInt(256*256*256);
                     String code = String.format("%06x", nextInt).toUpperCase();
-
-                    Ticket t = new Ticket(code, event.getName(), event.getImage(), day, time, PreferenceUtils.getUsername(getApplicationContext()), event.getPrice(), quantity);
-                    //dbh.addTicket(t);
+                    int promoted = (event.isPromoted())? 1:0;
+                    Ticket t = new Ticket(code, event.getName(), event.getImage(), day, time, PreferenceUtils.getUsername(getApplicationContext()), event.getPrice(), quantity, promoted);
 
                     Intent intent = new Intent(getApplicationContext(), PaymentActivity.class);
                     intent.putExtra("ticket", t);
