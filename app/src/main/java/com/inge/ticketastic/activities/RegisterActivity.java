@@ -53,6 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
                 else{
                     if(password.equals(confirm)){
+
                         if (dbh.checkAvailableUsername(username)) {
                             boolean b = dbh.addUser(username, password);
                             if (b) {
@@ -79,7 +80,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                                     }
                                 }.execute();
-                                Toast.makeText(getApplicationContext(), String.format("User %s succesfully created!", username), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), String.format("User %s successfully created!", username), Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(getApplicationContext(), "We can't create your user right now. Please try later.", Toast.LENGTH_SHORT).show();
                             }
@@ -92,7 +93,7 @@ public class RegisterActivity extends AppCompatActivity {
                     }
 
                     else{
-                        Toast.makeText(getApplicationContext(), "Given passwords doesn't match!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Given passwords don't match!", Toast.LENGTH_SHORT).show();
                     }
                 }
         }});

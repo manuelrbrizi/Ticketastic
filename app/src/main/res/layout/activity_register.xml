@@ -28,6 +28,7 @@
         android:backgroundTint="@color/colorAccent">
 
         <android.support.design.widget.TextInputEditText
+            android:id="@+id/emailSU"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorAccent"
@@ -66,6 +67,7 @@
         android:backgroundTint="@color/colorAccent">
 
         <android.support.design.widget.TextInputEditText
+            android:id="@+id/passSU"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter password"
@@ -103,6 +105,7 @@
         android:backgroundTint="@color/colorAccent">
 
         <android.support.design.widget.TextInputEditText
+            android:id="@+id/confirmSU"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Confirm password"
