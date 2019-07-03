@@ -3,10 +3,12 @@ package com.inge.ticketastic.activities;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.inge.ticketastic.classes.Profile;
@@ -18,6 +20,7 @@ public class TabbedActivity extends AppCompatActivity {
 
     SectionsPagerAdapter sectionsPagerAdapter;
     ViewPager viewPager;
+    TabLayout tabs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,7 +28,7 @@ public class TabbedActivity extends AppCompatActivity {
         sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
-        TabLayout tabs = findViewById(R.id.tabs);
+        tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
 
 
@@ -45,20 +48,30 @@ public class TabbedActivity extends AppCompatActivity {
 
     @Override
     protected void onNewIntent(Intent intent) {
+        int i = 0;
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             MainFragment mf = null;
+            int pos = tabs.getSelectedTabPosition();
+            Log.i("voiceFede",String.format("selected tab %d",pos));
+
             for(Fragment f : getSupportFragmentManager().getFragments()){
-                if(f.isVisible()){
-                    mf = (MainFragment) f;
+                mf = (MainFragment) f;
+                if(mf.pageViewModel.getIndex() == pos+1){
                     break;
                 }
             }
 
             mf.searchView.setQuery(intent.getStringExtra(SearchManager.QUERY),false);
 
-            //Toast.makeText(this,intent.getDataString(), Toast.LENGTH_LONG).show();
+
 
         }
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        //super.onActivityResult(requestCode, resultCode, data);
+        Log.i("voiceFede",String.format("RequestCode %d",requestCode));
     }
 }

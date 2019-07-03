@@ -25,7 +25,7 @@ import com.inge.ticketastic.R;
 public class MainFragment extends android.support.v4.app.Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    private com.inge.ticketastic.ui.main.PageViewModel pageViewModel;
+    public com.inge.ticketastic.ui.main.PageViewModel pageViewModel;
     RecyclerView mRecyclerView;
     EventAdapter eventAdapter;
     public SearchView searchView;

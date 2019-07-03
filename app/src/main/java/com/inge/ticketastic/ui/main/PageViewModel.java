@@ -27,6 +27,7 @@ public class PageViewModel extends ViewModel {
     public void setIndex(int index) {
         mIndex.setValue(index);
     }
+    public int getIndex(){return mIndex.getValue();}
 
     public LiveData<String> getText() {
         return mText;
