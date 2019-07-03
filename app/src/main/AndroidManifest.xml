@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.ticketastic">
+    package="com.inge.ticketastic">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,20 +11,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PaymentActivity" android:parentActivityName=".EventDetails"></activity>
+        <activity android:name="com.inge.ticketastic.activities.PaymentActivity" android:parentActivityName="com.inge.ticketastic.classes.EventDetails"></activity>
         <activity
-            android:name=".Profile"
+            android:name="com.inge.ticketastic.classes.Profile"
             android:noHistory="true"
-            android:parentActivityName=".TabbedActivity" />
+            android:parentActivityName="com.inge.ticketastic.activities.TabbedActivity" />
         <activity
-            android:name=".ConfirmationActivity"
+            android:name="com.inge.ticketastic.activities.ConfirmationActivity"
             android:noHistory="true" />
         <activity
-            android:name=".EventDetails"
+            android:name="com.inge.ticketastic.classes.EventDetails"
             android:noHistory="true"
-            android:parentActivityName=".TabbedActivity" />
+            android:parentActivityName="com.inge.ticketastic.activities.TabbedActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.inge.ticketastic.activities.MainActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,14 +33,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name="com.inge.ticketastic.activities.LoginActivity"
             android:noHistory="true" />
         <activity
-            android:name=".RegisterActivity"
+            android:name="com.inge.ticketastic.activities.RegisterActivity"
             android:noHistory="true" />
-        <activity android:name=".HomeActivity" />
+        <activity android:name="com.inge.ticketastic.activities.HomeActivity" />
         <activity
-            android:name=".TabbedActivity"
+            android:name="com.inge.ticketastic.activities.TabbedActivity"
             android:label="Ticketastic"
             android:launchMode="singleInstance">
             <meta-data
