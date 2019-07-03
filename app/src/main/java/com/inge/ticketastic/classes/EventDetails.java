@@ -65,10 +65,10 @@ public class EventDetails extends AppCompatActivity {
         String info = "";
 
         if(event.isPromoted()){
-            info = String.format("<b>Price: </b> %d$ <br> <b>THIS EVENT IS 2X1!</b>",event.getPrice());
+            info = String.format("<b>Price: </b> %d$<br><b>THIS EVENT IS 2X1!<br>Tickets left:</b> %d",event.getPrice(), event.getLeftTickets());
         }
         else{
-            info = String.format("<b>Price: </b> %d$",event.getPrice());
+            info = String.format("<b>Price: </b> %d$<br><b>Tickets left:</b> %d",event.getPrice(), event.getLeftTickets());
         }
 
         price.setText(Html.fromHtml(info));
@@ -96,15 +96,21 @@ public class EventDetails extends AppCompatActivity {
 
                 if(time != null && day != null){
                     int quantity = Integer.parseInt(qSpinner.getSelectedItem().toString());
-                    Random random = new Random();
-                    int nextInt = random.nextInt(256*256*256);
-                    String code = String.format("%06x", nextInt).toUpperCase();
-                    int promoted = (event.isPromoted())? 1:0;
-                    Ticket t = new Ticket(code, event.getName(), event.getImage(), day, time, PreferenceUtils.getUsername(getApplicationContext()), event.getPrice(), quantity, promoted);
+                    if(event.getLeftTickets() - quantity < 0){
+                        Toast.makeText(getApplicationContext(), "Not enough tickets. Sorry!", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        Random random = new Random();
+                        int nextInt = random.nextInt(256*256*256);
+                        String code = String.format("%06x", nextInt).toUpperCase();
+                        int promoted = (event.isPromoted())? 1:0;
+                        Ticket t = new Ticket(code, event.getName(), event.getImage(), day, time, PreferenceUtils.getUsername(getApplicationContext()), event.getPrice(), quantity, promoted);
 
-                    Intent intent = new Intent(getApplicationContext(), PaymentActivity.class);
-                    intent.putExtra("ticket", t);
-                    startActivity(intent);
+                        Intent intent = new Intent(getApplicationContext(), PaymentActivity.class);
+                        intent.putExtra("ticket", t);
+                        intent.putExtra("id", event.getId());
+                        startActivity(intent);
+                    }
                 }
                 else{
                     Toast.makeText(getApplicationContext(), "Please select a day and a time for the event", Toast.LENGTH_SHORT).show();

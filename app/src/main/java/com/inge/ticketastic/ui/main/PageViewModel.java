@@ -41,9 +41,6 @@ public class PageViewModel extends ViewModel {
     void loadMovie(Context context){
         DatabaseHandler db = new DatabaseHandler(context);
         mEventList = db.getEvents("movie");
-        for (Event e : mEventList){
-            Log.i("Movie",e.getName());
-        }
     }
 
     void loadFestival(Context context){

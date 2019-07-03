@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -64,12 +65,12 @@ public class RegisterActivity extends AppCompatActivity {
                                 new AsyncTask<Void, Void, Void>() {
                                     @Override
                                     protected Void doInBackground(Void[] objects) {
-                                        String body = String.format("Welcome to Ticketastic! Your account was created succesfully!");
+                                        String body = String.format("Welcome to Ticketastic!<br/><br/>Your account was created succesfully.Happy shopping!<br/><br/>Ticketastic team");
 
                                         try {
                                             GMailSender sender = new GMailSender("ticketasticnoreply@gmail.com", "1234abcd5678");
                                             sender.sendMail("Ticketastic new account",
-                                                    body,
+                                                    Html.fromHtml(body).toString(),
                                                     "ticketasticNoReply@gmail.com",
                                                     PreferenceUtils.getUsername(context));
                                         }   catch (Exception e) {
