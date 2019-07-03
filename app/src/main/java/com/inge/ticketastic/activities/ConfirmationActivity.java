@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.inge.ticketastic.R;
 import com.inge.ticketastic.classes.Ticket;
 import com.inge.ticketastic.adapters.TicketAdapter;
+import com.inge.ticketastic.database.DatabaseHandler;
 
 import java.util.ArrayList;
 
@@ -25,7 +26,10 @@ public class ConfirmationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_confirmation);
         ArrayList<Ticket> ticketArray = new ArrayList<>();
         Ticket t = (Ticket) getIntent().getSerializableExtra("ticket");
+        int id = getIntent().getIntExtra("id", 0);
         ticketArray.add(t);
+        DatabaseHandler dbh = new DatabaseHandler(getApplicationContext());
+        dbh.updateEvent(id, t.getQuantity());
 
         getSupportActionBar().setTitle("Purchase successful");
 

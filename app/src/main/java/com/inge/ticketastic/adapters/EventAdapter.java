@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import com.inge.ticketastic.classes.Event;
 import com.inge.ticketastic.classes.EventDetails;
 import com.inge.ticketastic.R;
+import com.inge.ticketastic.database.DatabaseHandler;
 
 import java.util.ArrayList;
 import java.util.List;
